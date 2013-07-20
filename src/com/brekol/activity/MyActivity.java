@@ -2,6 +2,7 @@ package com.brekol.activity;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import com.brekol.manager.ResourcesManager;
 import com.brekol.manager.SceneManager;
 import com.brekol.util.ConstantsUtil;
@@ -9,6 +10,8 @@ import org.andengine.engine.Engine;
 import org.andengine.engine.LimitedFPSEngine;
 import org.andengine.engine.camera.BoundCamera;
 import org.andengine.engine.camera.Camera;
+import org.andengine.engine.handler.timer.ITimerCallback;
+import org.andengine.engine.handler.timer.TimerHandler;
 import org.andengine.engine.options.EngineOptions;
 import org.andengine.engine.options.ScreenOrientation;
 import org.andengine.engine.options.WakeLockOptions;
@@ -36,6 +39,7 @@ public class MyActivity extends BaseGameActivity {
         engineOptions.setWakeLockOptions(WakeLockOptions.SCREEN_ON);
         engineOptions.getAudioOptions().setNeedsMusic(true);
         engineOptions.getAudioOptions().setNeedsSound(true);
+        engineOptions.getRenderOptions().setDithering(true);
         return engineOptions;
     }
 
@@ -52,6 +56,22 @@ public class MyActivity extends BaseGameActivity {
 
     @Override
     public void onPopulateScene(Scene pScene, OnPopulateSceneCallback pOnPopulateSceneCallback) throws IOException {
+        getEngine().registerUpdateHandler(new TimerHandler(0.2f,new ITimerCallback() {
+            @Override
+            public void onTimePassed(TimerHandler pTimerHandler) {
+                getEngine().unregisterUpdateHandler(pTimerHandler);
+                SceneManager.getInstance().createMenuScene();
+            }
+        }));
+
         pOnPopulateSceneCallback.onPopulateSceneFinished();
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if(keyCode == KeyEvent.KEYCODE_BACK){
+            SceneManager.getInstance().getCurrentScene().onBackKeyPressed();
+        }
+        return false;
     }
 }
