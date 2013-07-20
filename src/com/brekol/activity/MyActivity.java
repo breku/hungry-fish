@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.os.Bundle;
 import com.brekol.manager.ResourcesManager;
 import com.brekol.manager.SceneManager;
+import com.brekol.util.ConstantsUtil;
 import org.andengine.engine.Engine;
 import org.andengine.engine.LimitedFPSEngine;
 import org.andengine.engine.camera.BoundCamera;
@@ -15,6 +16,7 @@ import org.andengine.engine.options.resolutionpolicy.FillResolutionPolicy;
 import org.andengine.entity.scene.Scene;
 import org.andengine.ui.IGameInterface;
 import org.andengine.ui.activity.BaseGameActivity;
+import org.andengine.util.Constants;
 
 import java.io.IOException;
 
@@ -29,7 +31,7 @@ public class MyActivity extends BaseGameActivity {
 
     @Override
     public EngineOptions onCreateEngineOptions() {
-        camera = new BoundCamera(0, 0, 800, 480);
+        camera = new BoundCamera(0, 0, ConstantsUtil.SCREEN_WIDTH, ConstantsUtil.SCREEN_HEIGHT);
         EngineOptions engineOptions = new EngineOptions(true, ScreenOrientation.LANDSCAPE_FIXED, new FillResolutionPolicy(), camera);
         engineOptions.setWakeLockOptions(WakeLockOptions.SCREEN_ON);
         engineOptions.getAudioOptions().setNeedsMusic(true);
